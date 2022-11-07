@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: demodr.azurecr.io/dockerjava:$(Build.BuildId)
+        image: demodr.azurecr.io/dockerjava:20
         ports:
         - containerPort: 8080
