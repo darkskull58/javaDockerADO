@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: cicdregistry12.azurecr.io/cicdregistry12:$(Build.BuildId)
+        image: demodr.azurecr.io/dockerjava:$(Build.BuildId)
         ports:
         - containerPort: 8080
