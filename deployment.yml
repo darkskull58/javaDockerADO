@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: demodr.azurecr.io/dockerjava:20
+        image: demodr.azurecr.io/dockermavenimage:24
         ports:
         - containerPort: 8080
