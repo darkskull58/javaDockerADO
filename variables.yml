@@ -1,4 +1,5 @@
 variables:
+  appType: "java-docker"
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '7b940ed0-b6b9-4582-8c44-9d7ce121ac79'
   imageRepository: 'darkskulljavadockerado'
