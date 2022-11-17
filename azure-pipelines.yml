@@ -1,132 +1,26 @@
 variables:
 - template: variables.yml
 
+resources: 
+  repositories: 
+  - repository: CICD-Base
+    type: github
+    name: darkskull58/CICD-Base
+    ref: main
+    endpoint: github.com_darkskull58
 
  
 
 trigger:
 - master
 
-
-stages:
-- ${{ if eq(variables.appType,'angular') }}:
-  - stage: build
-    displayName: Build
-    jobs:
-    - job: Build
-      pool:
-        vmImage: ubuntu-latest
-      steps:
-        - task: NodeTool@0
-          displayName: 'Node installation'
-          inputs:
-            versionSpec: $(node_version)
-
-        - pwsh: Get-ChildItem -Path Env:\
-          displayName: 'Show environment variables'
-          condition: false # Disabled by default
-
-        - task: Cache@2
-          displayName: 'NPM Cache'
-          inputs:
-            key: 'npm | "$(Agent.OS)" | "$(node_version)" | package-lock.json'
-            path: $(npm_config_cache)
-
-        - script: npm cache verify
-          displayName: 'NPM Cache verification'
-
-        - script: npm ci
-          displayName: 'NPM CI'
-
-        - script: npm run lint
-          displayName: 'Angular linting'
-
-        - script: npm run test -- --no-watch --reporters="progress,junit" --code-coverage
-          displayName: 'Angular test run'
-
-        - task: PublishTestResults@2
-          displayName: 'Angular test result publication'
-          inputs:
-            testResultsFiles: 'TESTS-*.xml'
-
-        - task: PublishCodeCoverageResults@1
-          displayName: 'Angular test coverage publication'
-          inputs:
-            codeCoverageTool: 'Cobertura'
-            summaryFileLocation: '$(Build.SourcesDirectory)/coverage/**/cobertura-coverage.xml'
-
-        - script: npm run build -- --source-map=$(generate_source_maps)
-          displayName: 'Angular build'
-
-        - publish: '$(Build.SourcesDirectory)/dist/foo'
-          displayName: 'Publish Angular application'
-          artifact: AngularApp
-
-
-- ${{ if eq(variables.appType,'dotnet') }}:
-  - stage: build
-    displayName: Build
-    jobs:
-    - job: Build
-      pool:
-        vmImage: 'windows-latest'
-      steps:
-      - task: NuGetToolInstaller@1
-
-      - task: NuGetCommand@2
-        inputs:
-          restoreSolution: '$(solution)'
-
-      - task: VSBuild@1
-        inputs:
-          solution: '$(solution)'
-          msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-          platform: '$(buildPlatform)'
-          configuration: '$(buildConfiguration)'
-
-      - task: VSTest@2
-        inputs:
-          platform: '$(buildPlatform)'
-          configuration: '$(buildConfiguration)'
-
-
-- ${{ if eq(variables.appType,'java-docker') }}:
-  - stage: Build
-    displayName: Build and push stage
-    jobs:
-    - job: Build
-      displayName: Build
-      pool:
-        vmImage: $(vmImageName)
-      steps:
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: false
-      -  template: dockerbnp.yml
-
-- ${{ if eq(variables.appType,'java') }}:
-  - stage: Build
-    displayName: Build and push stage
-    jobs:
-    - job: Build
-      displayName: Build
-      pool:
-        vmImage: $(vmImageName)
-      steps:
-      - task: Maven@4
-        inputs:
-          mavenPomFile: 'pom.xml'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: false
+extends:
+  template: pipeline.yml@CICD-Base
+  parameters:
+      appType: ${{ variables.appType }}
+      vmimage: ${{ variables.vmimage }}
+      dockerRegistryServiceConnection: ${{ variables.dockerRegistryServiceConnection }}
+      imageRepository: ${{ variables.imageRepository }}
+      containerRegistry: ${{ variables.containerRegistry }}
+      dockerfilePath: ${{ variables.dockerfilePath }}
+      tag: ${{ variables.tag }}
