@@ -8,16 +8,7 @@ trigger:
 resources:
 - repo: self
 
-variables:
-  # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '7b940ed0-b6b9-4582-8c44-9d7ce121ac79'
-  imageRepository: 'darkskulljavadockerado'
-  containerRegistry: 'demodr.azurecr.io'
-  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
-  tag: '$(Build.BuildId)'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
 
 stages:
 - stage: Build
