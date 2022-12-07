@@ -1,7 +1,7 @@
 variables:
   appType: "java-docker"
   # Container registry service connection established during pipeline creation
-  dockerRegistryServiceConnection: '7b940ed0-b6b9-4582-8c44-9d7ce121ac79'
+  dockerRegistryServiceConnection: '4dac56d2-d8af-42c7-9f33-548f2a10ddab'
   imageRepository: 'darkskulljavadockerado'
   containerRegistry: 'sourishdemoacr.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
