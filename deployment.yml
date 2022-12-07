@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: demodr.azurecr.io/dockermavenimage:24
+        image: sourishdemoacr.azurecr.io/darkskulljavadockerado:5
         ports:
         - containerPort: 8080
