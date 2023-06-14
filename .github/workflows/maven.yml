@@ -47,18 +47,18 @@ jobs:
       with:
         version: 'v1.21.3'
       id: install
-    - name: setup kube config  
-      uses: Azure/aks-set-context@v1
-      with:
-        creds: '${{ secrets.AZURE_CREDENTIALS }}'
-        cluster-name: kube1java
-        resource-group: kube1
-    - name: deploy manifests
-      uses: Azure/k8s-deploy@v1
-      with:
-        manifests: |
-          deployment.yml
-          service.yml
+    #- name: setup kube config  
+    #  uses: Azure/aks-set-context@v1
+    #  with:
+    #    creds: '${{ secrets.AZURE_CREDENTIALS }}'
+    #    cluster-name: kube1java
+    #    resource-group: kube1
+    #- name: deploy manifests
+    #  uses: Azure/k8s-deploy@v1
+    #  with:
+    #    manifests: |
+    #      deployment.yml
+    #      service.yml
     - name: deploy to webapp
       uses: azure/webapps-deploy@v2
       with:
