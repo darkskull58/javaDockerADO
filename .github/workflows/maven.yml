@@ -56,8 +56,8 @@ jobs:
       uses: Azure/k8s-deploy@v1
       with:
         manifests: |
-          deployment.yaml
-          service.yaml
+          deployment.yml
+          service.yml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
