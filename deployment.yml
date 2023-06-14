@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: aks
-        image: sourishdemoacr.azurecr.io/darkskulljavadockerado:5
+        image: sourishbasu/javagradle-actions:master-af03535
         ports:
         - containerPort: 8080
