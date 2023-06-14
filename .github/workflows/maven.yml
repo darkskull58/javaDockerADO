@@ -40,6 +40,8 @@ jobs:
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+        
+        
     - name: Install kubectl
       uses: azure/setup-kubectl@v1
       with:
@@ -51,14 +53,18 @@ jobs:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: kube1java
         resource-group: kube1
-        
     - name: deploy manifests
       uses: Azure/k8s-deploy@v1
       with:
         manifests: |
           deployment.yml
           service.yml
-
+    - name: deploy to webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'webapp1sou'
+        publish-profile: ${{ secrets.AZURE_PUBLISH_PROFILE }}
+        images: sourishbasu/javagradle-actions:master-af03535
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
       uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
