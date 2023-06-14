@@ -45,8 +45,8 @@ jobs:
       with:
         version: 'v1.21.3'
       id: install
-      
-    - uses: Azure/aks-set-context@v1
+    - name: setup kube config  
+      uses: Azure/aks-set-context@v1
       with:
         creds: '${{ secrets.AZURE_CREDENTIALS }}'
         cluster-name: kube1java
